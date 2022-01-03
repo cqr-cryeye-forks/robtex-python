@@ -16,6 +16,7 @@ Options:
     --pdns-forward=<hostname>  pDNS Forward Hostname.
     --pdns-reverse=<ip>  pDNS Reverse IP Address.
 """
+import json
 
 from docopt import docopt
 
@@ -31,22 +32,22 @@ def main(arguments=None):
         # if there are values passed into this function for testing, move along
         pass
 
+    output = {}
     if arguments.get('--ip'):
         output = ip_query(arguments['--ip'])
         print(output)
-        return output
     elif arguments.get('--as'):
         output = as_query(arguments['--as'])
         print(output)
-        return output
     elif arguments.get('--pdns-forward'):
         output = pdns_forward(arguments['--pdns-forward'])
         print(output)
-        return output
     elif arguments.get('--pdns-reverse'):
         output = pdns_reverse(arguments['--pdns-reverse'])
         print(output)
-        return output
+
+    with open('output.json', 'w') as f:
+        json.dump(output, f, indent=2)
 
 
 if __name__ == "__main__":
